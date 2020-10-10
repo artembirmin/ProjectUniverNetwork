@@ -12,7 +12,7 @@ struct Student
 
 }studentsList;
 
-void InputtingDataAboutStudent() {
+void inputtingDataAboutStudent() {
 
 	cout << "Enter student name\n";
 	cin >> studentsList.nameStudent;
@@ -21,34 +21,37 @@ void InputtingDataAboutStudent() {
 		cin >> studentsList.studentGrades[i];
 }
 
-int GetFileSize() {
+int getFileSize() {
 	ifstream file2("C:\\Users\\petra\\source\\repos\\ProjectNetwork\\Server\\Server\\File2.txt", ios::binary | ios::in);
-	file2.seekg(0, ios::end);
-	return file2.tellg();
+	//Открыли файл
+	file2.seekg(0, ios::end);//Поставили курсор в конец
+	return file2.tellg(); //Количество пройденных байтов (курсор)
 }
 
-void IsFileGotBigger(int currentFileSize) {
+void isFileGotBigger(int currentFileSize) {
 	while (true) {
-		int newFileSize = GetFileSize();
+		int newFileSize = getFileSize();
 		if (newFileSize > currentFileSize)
 			return;//выйдем из функции только когда размер файла увеличится
 		//Sleep(7000);для нескольких структур
 	}
 }
 
-void WritingDataAboutStudent() {
-	ofstream file("File1.txt", ios::binary | ios::app);//Открытие файла для двоичных операций ввода-вывода | Добавление всех выводимых данных в конец заданного файла
+void writingDataAboutStudent() {
+	ofstream file("File1.txt", ios::binary | ios::app/* Открыли для записи в конец файла*/);
+	//Открытие файла для двоичных операций ввода-вывода 
+	//Добавление всех выводимых данных в конец заданного файла
 	if (!file) {
 		cout << "file isn't open!";
-		exit(1);
+		exit(1);//Выход из проги
 	}
 	else {
-		file.write((char*)&studentsList, sizeof(studentsList));//записываем в файл данные структуры
+		file.write((char*)&studentsList/*Указатель на начало строки*/, sizeof(studentsList));//записываем в файл данные структуры
 		file.close();
 	}
 }
 
-int GettingInfoAboutGrant(int currentFileSize) {
+int gettingInfoAboutGrant(int currentFileSize) {
 	int studentGrade;
 	ifstream file2("C:\\Users\\petra\\source\\repos\\ProjectNetwork\\Server\\Server\\File2.txt", ios::binary | ios::in);
 	file2.seekg(currentFileSize, ios::beg);
@@ -59,11 +62,11 @@ int GettingInfoAboutGrant(int currentFileSize) {
 
 void main() {
 	while (true) {
-		InputtingDataAboutStudent();
-		int currentFileSize = GetFileSize();
-		WritingDataAboutStudent();
-		IsFileGotBigger(currentFileSize); //если размер изменился(увеличился) - считываем данные с 
-		switch (GettingInfoAboutGrant(currentFileSize))//"File2.txt" и по их результатам определяем cтипендию
+		inputtingDataAboutStudent();
+		int currentFileSize = getFileSize();
+		writingDataAboutStudent();
+		isFileGotBigger(currentFileSize); //если размер изменился(увеличился) - считываем данные с 
+		switch (gettingInfoAboutGrant(currentFileSize))//"File2.txt" и по их результатам определяем cтипендию
 		{
 		case 0:
 			cout << "\nno grant\n\n";
